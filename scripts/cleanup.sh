@@ -1,10 +1,10 @@
 #!/bin/bash -eux
 
-echo "==> Clean up packages"
+echo "==> Clean up packages.."
 apt-get -y autoremove
 apt-get -y clean
 
-echo "==> Clearing last login information / bash history"
+echo "==> Clearing last login information / bash history..."
 >/var/log/lastlog
 >/var/log/wtmp
 >/var/log/btmp
@@ -12,10 +12,10 @@ unset HISTFILE
 rm -f /root/.bash_history
 rm -f /home/${USER_USERNAME}/.bash_history
 
-echo "==> Removing log files"
+echo "==> Wipe log file content.."
 find /var/log -type f | while read f; do echo -ne '' > "${f}"; done;
 
-echo "==> Removing caches"
+echo "==> Empty cache folder.."
 find /var/cache -type f -exec rm -rf {} \;
 
 echo "==> Cleaning up temp files"
@@ -50,7 +50,7 @@ if [ "x${swapuuid}" != "x" ]; then
 fi
 
 # Zero out the free space to save space in the final image
-dd if=/dev/zero of=/EMPTY bs=1M  || echo "dd exit code $? is suppressed"
+dd if=/dev/zero of=/EMPTY bs=1024  || echo "dd exit code $? is suppressed"
 rm -f /EMPTY
 
 # Make sure we wait until all the data is written to disk, otherwise
