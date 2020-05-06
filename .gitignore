@@ -1,0 +1,3 @@
+# Ignore packer cache / intermediate output folders
+packer_cache
+output-virtualbox-iso
