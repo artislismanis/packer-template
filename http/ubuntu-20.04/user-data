@@ -16,7 +16,7 @@ autoinstall:
     # A hack to pass original kernel command line options to target system
     # Used to dynamically pass in details for setting up the initial user
     - cat /proc/cmdline > /target/var/log/installer/cmdline
-  # user-data accepts standard cloudinit config
+  # user-data accepts standard cloud-init config
   # https://cloudinit.readthedocs.io/en/latest/topics/modules.html
   user-data:
     runcmd:
@@ -26,9 +26,6 @@ autoinstall:
       - export USER_USERNAME=$(cat /var/log/installer/cmdline | sed -e 's/^.*USER_USERNAME=//' -e 's/ .*$//')
       - useradd -m -G adm,cdrom,dip,plugdev,lxd,sudo -s /bin/bash $USER_USERNAME
       - echo "$USER_USERNAME:$USER_PASSWORD" | chpasswd
-      # Set up pasword-less sudo
+      # Set up password-less sudo
       - sed -i -e '/Defaults\s\+env_reset/a Defaults\texempt_group=sudo' /etc/sudoers
       - sed -i -e 's/%sudo  ALL=(ALL:ALL) ALL/%sudo  ALL=NOPASSWD:ALL/g' /etc/sudoers
-      # Extend LV to use all free space
-      - lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
-      - resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv

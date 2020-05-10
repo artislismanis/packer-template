@@ -5,13 +5,13 @@
       "boot_command": [
         "<esc><enter><wait><f6><esc><wait>",
         "<bs><bs><bs><bs><wait>",
-        "autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ",
-        "USER_PASSWORD={{ user `user_password` }} ",
-        "USER_USERNAME={{ user `user_username` }} ",
+        "autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ <wait>",
+        "USER_PASSWORD={{ user `user_password` }} <wait>",
+        "USER_USERNAME={{ user `user_username` }} <wait>",
         "---<wait><wait><enter>"
       ],
       "boot_wait": "5s",
-      "disk_size": "204800",
+      "disk_size": "512000",
       "guest_additions_mode": "disable",
       "guest_os_type": "Ubuntu_64",
       "hard_drive_interface": "sata",
@@ -20,7 +20,6 @@
       "iso_checksum": "f03d31c11136e24c10c705b7b3efc39f",
       "iso_checksum_type": "md5",
       "iso_url": "iso/ubuntu-20.04-live-server-amd64.iso",
-      "pause_before_connecting": "90s",
       "shutdown_command": "sudo shutdown -P now",
       "ssh_handshake_attempts": 50000,
       "ssh_password": "{{ user `user_password` }}",
@@ -71,6 +70,12 @@
           "{{.Name}}",
           "--vram",
           "64"
+        ],   
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--graphicscontroller",
+          "vmsvga"
         ],
         [
           "modifyvm",
@@ -96,10 +101,12 @@
         "USER_REGENERATE_SECRETS={{user `user_regenerate_secrets`}}",
         "USER_SSH_PUBLIC_KEY={{user `user_ssh_public_key`}}",
         "USER_USERNAME={{user `user_username`}}",
+        "VM_LV_INITIAL_SIZE={{user `vm_lv_initial_size`}}",
         "VM_NAME={{user `vm_name`}}"
       ],
       "execute_command": "{{.Vars}} sudo -E bash '{{.Path}}'",
       "scripts": [
+        "scripts/lvresize.sh",
         "scripts/user.sh",
         "scripts/upgrade.sh",
         "scripts/cleanup.sh"
@@ -137,6 +144,7 @@
     "user_regenerate_secrets": "false",
     "user_ssh_public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key",
     "user_username": "vagrant",
+    "vm_lv_initial_size":"4096", 
     "vm_name": "ubuntu-20.04-server-base"
   }
 }
