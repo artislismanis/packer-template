@@ -18,7 +18,7 @@
       "headless": false,
       "http_directory": "http/ubuntu-20.04",
       "iso_checksum": "f03d31c11136e24c10c705b7b3efc39f",
-      "iso_checksum_type": "md5",
+      "iso_checksum_type": "MD5",
       "iso_url": "iso/ubuntu-20.04-live-server-amd64.iso",
       "shutdown_command": "sudo shutdown -P now",
       "ssh_handshake_attempts": 50000,

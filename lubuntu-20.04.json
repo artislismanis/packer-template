@@ -1,5 +1,5 @@
 {
-  "_comment": "Build with `packer build lubuntu-20.04-desktop.json`",
+  "_comment": "Build with `packer build lubuntu-20.04.json`",
   "builders": [
     {
       "boot_command": [
@@ -11,20 +11,16 @@
         "---<wait><wait><enter>"
       ],
       "boot_wait": "5s",
-      "disk_size": "204800",
+      "disk_size": "512000",
       "guest_additions_mode": "upload",
       "guest_additions_path": "/home/{{user `user_username`}}/VBoxGuestAdditions-{{.Version}}.iso",
       "guest_os_type": "Ubuntu_64",
       "hard_drive_interface": "sata",
       "headless": false,
       "http_directory": "http/ubuntu-20.04",
+      "iso_checksum": "f03d31c11136e24c10c705b7b3efc39f",
       "iso_checksum_type": "MD5",
-      "iso_checksum_url": "https://releases.ubuntu.com/focal/MD5SUMS",
-      "iso_urls": [
-        "iso/ubuntu-20.04-live-server-amd64.iso",
-        "https://releases.ubuntu.com/focal/ubuntu-20.04-live-server-amd64.iso"
-      ],
-      "post_shutdown_delay": "30s",
+      "iso_url": "iso/ubuntu-20.04-live-server-amd64.iso",
       "shutdown_command": "sudo shutdown -P now",
       "ssh_handshake_attempts": 50000,
       "ssh_password": "{{ user `user_password` }}",
@@ -112,7 +108,6 @@
         "USER_REGENERATE_SECRETS={{user `user_regenerate_secrets`}}",
         "USER_SSH_PUBLIC_KEY={{user `user_ssh_public_key`}}",
         "USER_USERNAME={{user `user_username`}}",
-        "USER_PASSWORD={{user `user_password`}}",
         "VM_LV_INITIAL_SIZE={{user `vm_lv_initial_size`}}",
         "VM_NAME={{user `vm_name`}}"
       ],
@@ -160,6 +155,6 @@
     "user_ssh_public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key",
     "user_username": "vagrant",
     "vm_lv_initial_size":"8192", 
-    "vm_name": "lubuntu-20.04-desktop"
+    "vm_name": "lubuntu-20.04"
   }
 }
