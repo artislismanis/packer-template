@@ -1,9 +1,9 @@
 {
-  "_comment": "Build with `packer build ubuntu-20.04-server-base.json`",
+  "_comment": "Build with `packer build lubuntu-20.04.json`",
   "builders": [
     {
       "boot_command": [
-        "<esc><enter><wait><f6><esc><wait>",
+        "<esc><enter><wait><f6><esc><wait><wait>",
         "<bs><bs><bs><bs><wait>",
         "autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ <wait>",
         "USER_PASSWORD={{ user `user_password` }} <wait>",
@@ -12,7 +12,8 @@
       ],
       "boot_wait": "5s",
       "disk_size": "512000",
-      "guest_additions_mode": "disable",
+      "guest_additions_mode": "upload",
+      "guest_additions_path": "/home/{{user `user_username`}}/VBoxGuestAdditions-{{.Version}}.iso",
       "guest_os_type": "Ubuntu_64",
       "hard_drive_interface": "sata",
       "headless": false,
@@ -31,19 +32,19 @@
           "modifyvm",
           "{{.Name}}",
           "--memory",
-          "8192"
+          "16384"
         ],
         [
           "modifyvm",
           "{{.Name}}",
           "--cpus",
-          "4"
+          "6"
         ],
         [
           "modifyvm",
           "{{.Name}}",
           "--vram",
-          "128"
+          "256"
         ],
         [
           "modifyvm",
@@ -57,25 +58,31 @@
           "modifyvm",
           "{{.Name}}",
           "--memory",
-          "1024"
+          "4096"
         ],
         [
           "modifyvm",
           "{{.Name}}",
           "--cpus",
-          "2"
+          "4"
         ],
         [
           "modifyvm",
           "{{.Name}}",
           "--vram",
-          "64"
-        ],   
+          "256"
+        ],
         [
           "modifyvm",
           "{{.Name}}",
           "--graphicscontroller",
           "vmsvga"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--accelerate3d",
+          "on"
         ],
         [
           "modifyvm",
@@ -104,11 +111,14 @@
         "VM_LV_INITIAL_SIZE={{user `vm_lv_initial_size`}}",
         "VM_NAME={{user `vm_name`}}"
       ],
-      "execute_command": "{{.Vars}} sudo -E bash '{{.Path}}'",
+      "execute_command": "{{.Vars}} sudo -H -E bash '{{.Path}}'",
       "scripts": [
         "scripts/lvresize.sh",
         "scripts/user.sh",
         "scripts/upgrade.sh",
+        "scripts/lubuntu.sh",
+        "scripts/utilities.sh",
+        "scripts/vboxadditions.sh",
         "scripts/cleanup.sh"
       ],
       "type": "shell"
@@ -131,7 +141,7 @@
         "USER_REGENERATE_SECRETS={{user `user_regenerate_secrets`}}",
         "VM_NAME={{user `vm_name`}}"
       ],
-      "execute_command": "{{.Vars}} sudo -E bash '{{.Path}}'",
+      "execute_command": "{{.Vars}} sudo -H -E bash '{{.Path}}'",
       "scripts": [
         "scripts/changepw.sh"
       ],
@@ -144,7 +154,7 @@
     "user_regenerate_secrets": "false",
     "user_ssh_public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key",
     "user_username": "vagrant",
-    "vm_lv_initial_size":"4096", 
-    "vm_name": "ubuntu-20.04-server-base"
+    "vm_lv_initial_size":"8192", 
+    "vm_name": "lubuntu-20.04"
   }
 }

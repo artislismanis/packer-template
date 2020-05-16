@@ -22,7 +22,7 @@ Rolling your own base box gives you full control and transparency over what goes
 
 3. Download the relevant [Ubuntu Server ISO](https://releases.ubuntu.com/20.04/ubuntu-20.04-live-server-amd64.iso) installation media into the `iso` folder, make note of the related [MD5 checksum](https://releases.ubuntu.com/20.04/MD5SUMS).
 
-4. Review `ubuntu-20.04-server-base.json`:
+4. Review the Packer template you want to use (this example uses `ubuntu-20.04-server-base.json`):
     1. Make sure `iso_checksum` and `iso_url` variables in builders section have the correct values assigned based on the previous step.
     2. Modify VM specification in `vboxmanage` section to match your available system resources. These are standard VirtualBox VBoxManage commands - see [VirtualBox manual](https://www.virtualbox.org/manual/ch08.html#vboxmanage-modifyvm) for full reference.
     3. Review `variables` section that specifies user to be created for provisioning. By default the template will create standard insecure Vagrant user. These details can be changed directly in the template file or managed through runtime overrides like described in these [Packer examples](https://www.packer.io/docs/templates/user-variables/#setting-variables).
@@ -39,11 +39,11 @@ Rolling your own base box gives you full control and transparency over what goes
     packer build --var-file=custom-overrides.json ubuntu-20.04-server-base.json
     ```
 
-6. Wait for the build to finish. End to end build of minimal Ubuntu Server box using the specified VM configuration takes around 25-30 minutes. The output is saved in `box/virtualbox/` folder and can be used with `vagrant box add` as described in [Vagrant CLI documentation](https://www.vagrantup.com/docs/cli/box.html#box-add).
+6. Wait for the build to finish. End to end build of minimal Ubuntu Server box using the specified VM configuration takes under 15 minutes, Lubuntu Desktop under 50 minutes. The output is saved in `box/virtualbox/` folder and can be used with `vagrant box add` as described in [Vagrant CLI documentation](https://www.vagrantup.com/docs/cli/box.html#box-add).
 
 ## What else?
 
-While the template and provisioning scripts have been tested through numerous builds, there is a little bit of hacking going on with various timings in the provisioning process to make Packer work with Ubuntu Server Live Installer. Watch this space - more detail and troubleshooting information to be provided soon. Check out 'Useful Resources' section below if you get stuck.
+While the template and provisioning scripts have been tested through numerous builds, there is a little bit of hacking going on with various timings in the provisioning process to make Packer work with Ubuntu Server Live Installer. More detail and troubleshooting information to be provided in the [project wiki](https://github.com/artislismanis/packer-template/wiki). In the meantime check out 'Useful Resources' section below if you get stuck.
 
 ## Useful Resources
 
