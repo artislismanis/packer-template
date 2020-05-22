@@ -89,15 +89,22 @@
   ],
   "post-processors": [
     {
+      "include":[
+        "box/virtualbox/{{user `vm_name`}}/box.key",
+        "box/virtualbox/{{user `vm_name`}}/box.password",
+        "box/virtualbox/{{user `vm_name`}}/box.username"
+      ],
       "keep_input_artifact": false,
-      "output": "box/virtualbox/{{user `vm_name`}}.box",
-      "type": "vagrant"
+      "output": "box/virtualbox/{{user `vm_name`}}/{{user `vm_name`}}.box",
+      "type": "vagrant",
+      "vagrantfile_template": "{{user `vm_vagrantfile`}}"
     }
   ],
   "provisioners": [
     {
       "environment_vars": [
         "USER_FULLNAME={{user `user_fullname`}}",
+        "USER_PASSWORD={{user `user_password`}}",
         "USER_REGENERATE_SECRETS={{user `user_regenerate_secrets`}}",
         "USER_SSH_PUBLIC_KEY={{user `user_ssh_public_key`}}",
         "USER_USERNAME={{user `user_username`}}",
@@ -114,15 +121,21 @@
       "type": "shell"
     },
     {
-      "destination": "box/virtualbox/{{user `vm_name`}}.key",
+      "destination": "box/virtualbox/{{user `vm_name`}}/box.key",
       "direction": "download",
       "source": "/home/{{user `user_username`}}/{{user `vm_name`}}.key",
       "type": "file"
     },
     {
-      "destination": "box/virtualbox/{{user `vm_name`}}.password",
+      "destination": "box/virtualbox/{{user `vm_name`}}/box.password",
       "direction": "download",
       "source": "/home/{{user `user_username`}}/{{user `vm_name`}}.password",
+      "type": "file"
+    },
+    {
+      "destination": "box/virtualbox/{{user `vm_name`}}/box.username",
+      "direction": "download",
+      "source": "/home/{{user `user_username`}}/{{user `vm_name`}}.username",
       "type": "file"
     },
     {
@@ -145,6 +158,7 @@
     "user_ssh_public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key",
     "user_username": "vagrant",
     "vm_lv_initial_size":"4096", 
-    "vm_name": "ubuntu-20.04-server-base"
+    "vm_name": "ubuntu-20.04-server-base",
+    "vm_vagrantfile": "vagrant/default.tpl"
   }
 }
