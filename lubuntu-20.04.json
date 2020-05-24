@@ -97,12 +97,13 @@
   "post-processors": [
     {
       "include":[
-        "box/virtualbox/{{user `vm_name`}}.key",
-        "box/virtualbox/{{user `vm_name`}}.password",
-        "box/virtualbox/{{user `vm_name`}}/box.username"
+        "box/virtualbox/{{user `vm_name`}}/box-template/box.key",
+        "box/virtualbox/{{user `vm_name`}}/box-template/box.password",
+        "box/virtualbox/{{user `vm_name`}}/box-template/box.username",
+        "box/virtualbox/{{user `vm_name`}}/box-template/info.json"
       ],
       "keep_input_artifact": false,
-      "output": "box/virtualbox/{{user `vm_name`}}.box",
+      "output": "box/virtualbox/{{user `vm_name`}}/{{user `vm_name`}}.box",
       "type": "vagrant",
       "vagrantfile_template": "{{user `vm_vagrantfile`}}"
     }
@@ -116,12 +117,15 @@
         "USER_SSH_PUBLIC_KEY={{user `user_ssh_public_key`}}",
         "USER_USERNAME={{user `user_username`}}",
         "VM_LV_INITIAL_SIZE={{user `vm_lv_initial_size`}}",
-        "VM_NAME={{user `vm_name`}}"
+        "VM_INFO_AUTHOR={{user `vm_info_author`}}",
+        "VM_INFO_DESCRIPTION={{user `vm_info_description`}}",
+        "VM_INFO_URL={{user `vm_info_url`}}"
       ],
       "execute_command": "{{.Vars}} sudo -H -E bash '{{.Path}}'",
       "scripts": [
         "scripts/lvresize.sh",
         "scripts/user.sh",
+        "scripts/metadata.sh",
         "scripts/upgrade.sh",
         "scripts/lubuntu.sh",
         "scripts/utilities.sh",
@@ -131,21 +135,9 @@
       "type": "shell"
     },
     {
-      "destination": "box/virtualbox/{{user `vm_name`}}/box.key",
+      "destination": "box/virtualbox/{{user `vm_name`}}/",
       "direction": "download",
-      "source": "/home/{{user `user_username`}}/{{user `vm_name`}}.key",
-      "type": "file"
-    },
-    {
-      "destination": "box/virtualbox/{{user `vm_name`}}/box.password",
-      "direction": "download",
-      "source": "/home/{{user `user_username`}}/{{user `vm_name`}}.password",
-      "type": "file"
-    },
-    {
-      "destination": "box/virtualbox/{{user `vm_name`}}/box.username",
-      "direction": "download",
-      "source": "/home/{{user `user_username`}}/{{user `vm_name`}}.username",
+      "source": "/home/{{user `user_username`}}/box-template/",
       "type": "file"
     },
     {
@@ -167,6 +159,9 @@
     "user_regenerate_secrets": "false",
     "user_ssh_public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key",
     "user_username": "vagrant",
+    "vm_info_author":"Artis Lismanis",
+    "vm_info_description":"A minimal Lubuntu 20.40 LTS desktop base box",
+    "vm_info_url":"https://github.com/artislismanis/packer-template",
     "vm_lv_initial_size":"8192", 
     "vm_name": "lubuntu-20.04",
     "vm_vagrantfile": "vagrant/default.tpl"

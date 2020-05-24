@@ -11,17 +11,17 @@ usermod -c "${USER_FULLNAME}" ${USER_USERNAME}
 
 # Set supplied SSH public key as authorised key or autogenerate new key and user password 
 mkdir /home/${USER_USERNAME}/.ssh
-chmod 700 /home/${USER_USERNAME}/.ssh
+mkdir /home/${USER_USERNAME}/box-template
 
 # Save username to file 
-echo "$USER_USERNAME" > /home/${USER_USERNAME}/${VM_NAME}.username
+echo "$USER_USERNAME" > /home/${USER_USERNAME}/box-template/box.username
 
 if [[ "$USER_REGENERATE_SECRETS" = "false" ]]
 then
 	echo "${USER_SSH_PUBLIC_KEY}" > /home/${USER_USERNAME}/.ssh/authorized_keys
 	# Use Vagrant insecure SSH keypair
 	# https://github.com/hashicorp/vagrant/tree/master/keys
-	cat <<- EOF > /home/${USER_USERNAME}/${VM_NAME}.key
+	cat <<- EOF > /home/${USER_USERNAME}/box-template/box.key
 	-----BEGIN RSA PRIVATE KEY-----
 	MIIEogIBAAKCAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzI
 	w+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoP
@@ -51,16 +51,17 @@ then
 	-----END RSA PRIVATE KEY-----
 	EOF
 	# Save the password passed in from Packer template
-	echo "$USER_PASSWORD" > /home/${USER_USERNAME}/${VM_NAME}.password
+	echo "$USER_PASSWORD" > /home/${USER_USERNAME}/box-template/box.password
 else
 	# Generate new SSH key
-	ssh-keygen -t rsa -N "" -f ${VM_NAME}.key -C ""
+	ssh-keygen -m PEM -t rsa -N "" -f box.key -C ""
 	#Add public key to authorized_keys for the user
-	mv /home/${USER_USERNAME}/${VM_NAME}.key.pub /home/${USER_USERNAME}/.ssh/authorized_keys
+	mv /home/${USER_USERNAME}/box.key.pub /home/${USER_USERNAME}/.ssh/authorized_keys
+	#Move private key to box-template folder
+	mv /home/${USER_USERNAME}/box.key /home/${USER_USERNAME}/box-template/
 	#Generate a random password & save it into a file
 	NEW_PASSW=$(openssl rand -base64 16)
-	echo "$NEW_PASSW" > /home/${USER_USERNAME}/${VM_NAME}.password
-	chmod 600  /home/${USER_USERNAME}/${VM_NAME}.password
+	echo "$NEW_PASSW" > /home/${USER_USERNAME}/box-template/box.password
 fi
 
 # Make sure permissions / ownership are correct
