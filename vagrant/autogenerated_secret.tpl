@@ -23,9 +23,15 @@ Vagrant.configure("2") do |config|
     end
     config.trigger.after [:destroy] do |trigger|
         trigger.name = "Box Template User & Secrets"
-        trigger.info = "Getting default box login information..."
+        trigger.info = "Removing default box login information..."
         trigger.ruby do |env,machine|
             FileUtils.rm_rf("boxinfo") if File.directory?("boxinfo") && File.exists?("vagrantfile")
         end
     end
+    # Default provisioning steps
+    config.vm.provision "shell", inline: <<-EOF
+        echo "Extending Logical Volume to use all available space on VM"
+        lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
+        resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
+    EOF
 end
