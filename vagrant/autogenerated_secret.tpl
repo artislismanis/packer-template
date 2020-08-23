@@ -1,5 +1,12 @@
+# Box template level settings
+# https://www.vagrantup.com/docs/vagrantfile/
+
+
 
 Vagrant.configure("2") do |config|
+
+    # Install vagrant-vbguest plugin to help manage VB Guest Additions 
+    config.vagrant.plugins = "vagrant-vbguest"
     
     # Get the root folder of the box
     box_root = File.expand_path(File.dirname(__FILE__))

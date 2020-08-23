@@ -1,5 +1,6 @@
 #!/bin/bash -eux
 
+echo "==> Resizing LV..."
 # Get/set some physical and logical volume details
 VM_LV_ID="/dev/mapper/ubuntu--vg-ubuntu--lv"
 VM_LV_CURRENT_SIZE=$(echo $(lvs --units m --nosuffix -S 'name=ubuntu-lv' -o size --noheadings) / 1 | bc)
