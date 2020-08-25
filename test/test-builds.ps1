@@ -28,7 +28,7 @@ function lubuntu-vagrant-cloud ($box) {
     # This will only work if you have set a valid Vagrant Cloud token in $env:VC_TOKEN
     $vagrant_cloud_token = $("vagrant_cloud_token="+$env:VC_TOKEN)
     $vagrant_cloud_tag = "vagrant_cloud_tag=artislismanis/lubuntu-20.04"
-    $vagrant_cloud_version = "vagrant_cloud_version=1.1.0"
+    $vagrant_cloud_version = "vagrant_cloud_version=0.0.0"
     packer build -force -var $("vm_name=$box") -var $vagrant_cloud_token --var $vagrant_cloud_tag --var $vagrant_cloud_version lubuntu-20.04.json > $("$PSScriptRoot\logs\$box.log")
 }
 
