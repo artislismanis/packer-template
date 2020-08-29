@@ -41,4 +41,3 @@ Here are some of the key steps I go through to test my boxes:
 4. Are the key software packages that you pre-installed all available and working as expected?
 
 5. If you are using post-processors to publish your builds, are these working as expected?
-

@@ -9,19 +9,23 @@ if ($tests.count -eq 0) {
 ### Test Build Definitions ###
 
 function ubuntu-base-vagrant ($box) {
-    packer build -force -var $("vm_name=$box") ubuntu-20.04-server-base.json > $("$PSScriptRoot\logs\$box.log")
+    packer validate --var $("vm_name=$box") $("$PSScriptRoot\..\ubuntu-20.04-server-base.json") > $("$PSScriptRoot\logs\$box.log")
+    packer build --force --var $("vm_name=$box") $("$PSScriptRoot\..\ubuntu-20.04-server-base.json") >> $("$PSScriptRoot\logs\$box.log")
 }
 
 function ubuntu-base-alt ($box) {
-    packer build -force -var $("vm_name=$box") --var-file=auto-secret-overrides.json ubuntu-20.04-server-base.json > $("$PSScriptRoot\logs\$box.log")
+    packer validate --var $("vm_name=$box") --var-file=$("$PSScriptRoot\..\override-examples\auto-secret-overrides.json") $("$PSScriptRoot\..\ubuntu-20.04-server-base.json") > $("$PSScriptRoot\logs\$box.log")
+    packer build --force -var $("vm_name=$box") --var-file=$("$PSScriptRoot\..\override-examples\auto-secret-overrides.json") $("$PSScriptRoot\..\ubuntu-20.04-server-base.json") >> $("$PSScriptRoot\logs\$box.log")
 }
 
 function lubuntu-vagrant ($box) {
-    packer build -force -var  $("vm_name=$box") -except=publish-vc lubuntu-20.04.json > $("$PSScriptRoot\logs\$box.log")
+    packer validate --var  $("vm_name=$box") --except=publish-vc $("$PSScriptRoot\..\lubuntu-20.04.json") > $("$PSScriptRoot\logs\$box.log")
+    packer build --force --var  $("vm_name=$box") --except=publish-vc $("$PSScriptRoot\..\lubuntu-20.04.json") >> $("$PSScriptRoot\logs\$box.log")
 }
 
 function lubuntu-alt ($box) {
-    packer build -force -var $("vm_name=$box") -except=publish-vc --var-file=auto-secret-overrides.json lubuntu-20.04.json > $("$PSScriptRoot\logs\$box.log")
+    packer validate --var $("vm_name=$box") --except=publish-vc --var-file=$("$PSScriptRoot\..\override-examples\auto-secret-overrides.json") $("$PSScriptRoot\..\lubuntu-20.04.json") > $("$PSScriptRoot\logs\$box.log")
+    packer build --force --var $("vm_name=$box") --except=publish-vc --var-file=$("$PSScriptRoot\..\override-examples\auto-secret-overrides.json") $("$PSScriptRoot\..\lubuntu-20.04.json") >> $("$PSScriptRoot\logs\$box.log")
 }
 
 function lubuntu-vagrant-cloud ($box) {
@@ -29,7 +33,8 @@ function lubuntu-vagrant-cloud ($box) {
     $vagrant_cloud_token = $("vagrant_cloud_token="+$env:VC_TOKEN)
     $vagrant_cloud_tag = "vagrant_cloud_tag=artislismanis/lubuntu-20.04"
     $vagrant_cloud_version = "vagrant_cloud_version=0.0.0"
-    packer build -force -var $("vm_name=$box") -var $vagrant_cloud_token --var $vagrant_cloud_tag --var $vagrant_cloud_version lubuntu-20.04.json > $("$PSScriptRoot\logs\$box.log")
+    packer validate --var $("vm_name=$box") --var $vagrant_cloud_token --var $vagrant_cloud_tag --var $vagrant_cloud_version $("$PSScriptRoot\..\lubuntu-20.04.json") > $("$PSScriptRoot\logs\$box.log")
+    packer build --force --var $("vm_name=$box") --var $vagrant_cloud_token --var $vagrant_cloud_tag --var $vagrant_cloud_version $("$PSScriptRoot\..\lubuntu-20.04.json") >> $("$PSScriptRoot\logs\$box.log")
 }
 
 ### Test Runner ###
