@@ -14,4 +14,16 @@ Provided templates:
 
 **vagrant-cloud-overrides.json** - Override for specifying Vagrant Cloud box publishing details.
 
-Chain overrides, combine in the same file, override individual variables command line. 
+Chain overrides, combine in the same file, override individual variables command line.
+
+ Or overriding default user variables using an overrides file.
+
+    ```shell
+    packer build --var-file=custom-overrides.json ubuntu-20.04-server-base.json
+    ```
+
+    Or overriding specific user variables directly on the command line.
+
+     ```shell
+    packer build --val "vm_name=coolName" ubuntu-20.04-server-base.json
+    ```

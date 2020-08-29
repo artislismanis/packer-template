@@ -32,17 +32,7 @@ Rolling your own base box gives you full control and transparency over what goes
     packer build ubuntu-20.04-server-base.json
     ```
 
-    Or overriding default user variables using an overrides file.
-
-    ```shell
-    packer build --var-file=custom-overrides.json ubuntu-20.04-server-base.json
-    ```
-
-    Or overriding specific user variables directly on the command line.
-
-     ```shell
-    packer build --val "vm_name=coolName" ubuntu-20.04-server-base.json
-    ```
+    Check out [override-examples](override-examples/README.md) for different ways to override default user variables.
 
 6. Wait for the build to finish. End to end build of minimal Ubuntu Server box using the specified VM configuration takes under 15 minutes, Lubuntu Desktop under 50 minutes. The output is saved in `box/virtualbox/` folder and can be used with `vagrant box add` as described in [Vagrant CLI documentation](https://www.vagrantup.com/docs/cli/box.html#box-add).
 
