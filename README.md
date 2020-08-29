@@ -54,6 +54,8 @@ The project provides two templates `ubuntu-20.04-server-base.json` and `lubuntu-
 packer build --except=publish-vc lubuntu-20.04.json
 ```
 
+If you do want to build and publish your box to Vagrant Cloud the template expects you to specify tag, token and version in `VC_TAG`, `VC_TOKEN` and `VC_VERSION` environmental variables respectively.
+
 The project has some rudimentary test build scripts and brief documentation to help with testing - check out the notes on [testing](test/testing.md) for more details.
 
 Over time [project wiki](https://github.com/artislismanis/packer-template/wiki) will be evolved to include more detail and troubleshooting information. In the meantime check out 'Useful Resources' section below if you get stuck.
