@@ -1,5 +1,6 @@
 #!/bin/bash -eux
 
+echo "==> Resizing LV..."
 # Get/set some physical and logical volume details
 VM_LV_ID="/dev/mapper/ubuntu--vg-ubuntu--lv"
 VM_LV_CURRENT_SIZE=$(echo $(lvs --units m --nosuffix -S 'name=ubuntu-lv' -o size --noheadings) / 1 | bc)
@@ -18,7 +19,7 @@ if [ "$VM_LV_CURRENT_SIZE" -lt "${VM_LV_INITIAL_SIZE}" ]
         lvextend -L ${VM_LV_INITIAL_SIZE} $VM_LV_ID 
     # Otherwise use up as much free space on PV as available.
     else 
-        lvextend -l +100%FREE $VM_LV_ID40
+        lvextend -l +100%FREE $VM_LV_ID
     fi
     # Resize FS to take up all available space
     resize2fs $VM_LV_ID

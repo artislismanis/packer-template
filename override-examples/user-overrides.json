@@ -1,0 +1,8 @@
+{
+  "_comment": "Build with `packer build --var-file=user-overrides.json ubuntu-20.04-server-base.json` replacing `ubuntu-20.04-server-base.json` with appropriate packer template reference.",
+  "user_fullname": "Custom User",
+  "user_password": "Ku570Mp4zZW0RD123!",
+  "user_regenerate_secrets": "false",
+  "user_ssh_public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDkN6vEAS7hv70TaFy7BjfB7DModzDd02JOh6984J/GzYlymSC4zGLFsqrgSgKHTVA11V1l+XkTclVD4JLuPFZhnvHNi5AubhrllaiSgW0Y/sav9gcQ+NfBsZimP9hP1zSxohevIXX9mF7uQUb0d7nJ11Lo1E+POY9+MbKsAqtRyw== ",
+  "user_username": "custom_u"
+}

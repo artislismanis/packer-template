@@ -3,6 +3,9 @@
 # https://wiki.ubuntu.com/FoundationsTeam/AutomatedServerInstalls
 autoinstall:
   version: 1
+  early-commands:
+    # Stop installer's SSH Server as freaks Packer out
+    - systemctl stop ssh
   ssh:
     # Install OpenSSH Server
     install-server: yes
@@ -12,6 +15,29 @@ autoinstall:
   keyboard:
     layout: gb
     variant: uk
+  # Borrow & slightly modify default auto LVM storage config from interactive install
+  # This is to ensure consistently sized (small - 4GB) LV that can later be easily extended
+  storage:
+    config:
+      - {ptable: gpt, path: /dev/sda, wipe: superblock,
+        preserve: false, name: '', grub_device: true, type: disk, id: disk-sda}
+      - {device: disk-sda, size: 1048576, flag: bios_grub, number: 1, preserve: false,
+        type: partition, id: partition-3}
+      - {device: disk-sda, size: 1073741824, wipe: superblock, flag: '', number: 2,
+        preserve: false, type: partition, id: partition-4}
+      - {fstype: ext4, volume: partition-4, preserve: false, type: format, id: format-2}
+      - {device: disk-sda, size: -1, wipe: superblock, flag: '', number: 3,
+        preserve: false, type: partition, id: partition-5} 
+      - name: ubuntu-vg
+        devices: [partition-5]
+        preserve: false
+        type: lvm_volgroup
+        id: lvm_volgroup-1
+      - {name: ubuntu-lv, volgroup: lvm_volgroup-1, size: 4294967296B, preserve: false,
+        type: lvm_partition, id: lvm_partition-1}
+      - {fstype: ext4, volume: lvm_partition-1, preserve: false, type: format, id: format-4}
+      - {device: format-4, path: /, type: mount, id: mount-4}
+      - {device: format-2, path: /boot, type: mount, id: mount-2}
   late-commands:
     # A hack to pass original kernel command line options to target system
     # Used to dynamically pass in details for setting up the initial user

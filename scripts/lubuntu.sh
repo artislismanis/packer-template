@@ -13,3 +13,7 @@ apt-get remove -y trojita k3b libkf5notifyconfig5 phonon4qt5 phonon4qt5-backend-
 
 echo "==> SDDM / Logitec Unifying Receiver Keyboard Layout Fix..."
 echo "setxkbmap gb,us" >> /usr/share/sddm/scripts/Xsetup 
+
+echo "==> Resize SDDM screen..."
+# SDDM auto resizes with old style VBoxVGA video adapter but this fails with recommended VMSVGA. 
+echo "xrandr --output Virtual1 --mode 1440x900 --auto --pos 0x0 --rotate normal" >> /usr/share/sddm/scripts/Xsetup

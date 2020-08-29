@@ -1,0 +1,12 @@
+{
+  "_comment": "Build with `packer build --var-file=box-overrides.json lubuntu-20.04.json` replacing `lubuntu-20.04.json` with appropriate packer template reference.",
+  "vm_info_author": "Artis Lismanis",
+  "vm_info_description": "My personalised dev environment based on Lubuntu 20.04 LTS",
+  "vm_info_url": "https://github.com/artislismanis/packer-template",
+  "vm_iso_image": "iso/ubuntu-20.04.1-live-server-amd64.iso",
+  "vm_iso_image_checksum": "443511f6bf12402c12503733059269a2e10dec602916c0a75263e5d990f6bb93",
+  "vm_iso_image_checksum_type": "SHA256",
+  "vm_lv_initial_size": "25600",
+  "vm_name": "my-cool-lubuntu20.04-devbox",
+  "vm_vagrantfile": "vagrant/default.tpl"
+}

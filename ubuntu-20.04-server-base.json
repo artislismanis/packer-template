@@ -12,19 +12,18 @@
       ],
       "boot_wait": "5s",
       "disk_size": "512000",
-      "guest_additions_mode": "disable",
+      "guest_additions_mode": "upload",
+      "guest_additions_path": "/home/{{user `user_username`}}/VBoxGuestAdditions-{{.Version}}.iso",
       "guest_os_type": "Ubuntu_64",
       "hard_drive_interface": "sata",
       "headless": false,
       "http_directory": "http/ubuntu-20.04",
-      "iso_checksum": "f03d31c11136e24c10c705b7b3efc39f",
-      "iso_checksum_type": "MD5",
-      "iso_url": "iso/ubuntu-20.04-live-server-amd64.iso",
+      "iso_checksum": "{{user `vm_iso_image_checksum_type`}}:{{user `vm_iso_image_checksum`}}",
+      "iso_url": "{{user `vm_iso_image`}}",
       "shutdown_command": "sudo shutdown -P now",
-      "ssh_handshake_attempts": 50000,
       "ssh_password": "{{ user `user_password` }}",
+      "ssh_timeout": "30m",
       "ssh_username": "{{ user `user_username` }}",
-      "ssh_wait_timeout": "30m",
       "type": "virtualbox-iso",
       "vboxmanage": [
         [
@@ -70,7 +69,7 @@
           "{{.Name}}",
           "--vram",
           "64"
-        ],   
+        ],
         [
           "modifyvm",
           "{{.Name}}",
@@ -89,40 +88,46 @@
   ],
   "post-processors": [
     {
-      "keep_input_artifact": false,
-      "output": "box/virtualbox/{{user `vm_name`}}.box",
-      "type": "vagrant"
+      "include": [
+        "box/virtualbox/{{user `vm_name`}}/box-template/box.key",
+        "box/virtualbox/{{user `vm_name`}}/box-template/box.password",
+        "box/virtualbox/{{user `vm_name`}}/box-template/box.username",
+        "box/virtualbox/{{user `vm_name`}}/box-template/info.json"
+      ],
+      "keep_input_artifact": true,
+      "output": "box/virtualbox/{{user `vm_name`}}/{{user `vm_name`}}.box",
+      "type": "vagrant",
+      "vagrantfile_template": "{{user `vm_vagrantfile`}}"
     }
   ],
   "provisioners": [
     {
       "environment_vars": [
         "USER_FULLNAME={{user `user_fullname`}}",
+        "USER_PASSWORD={{user `user_password`}}",
         "USER_REGENERATE_SECRETS={{user `user_regenerate_secrets`}}",
         "USER_SSH_PUBLIC_KEY={{user `user_ssh_public_key`}}",
         "USER_USERNAME={{user `user_username`}}",
         "VM_LV_INITIAL_SIZE={{user `vm_lv_initial_size`}}",
-        "VM_NAME={{user `vm_name`}}"
+        "VM_INFO_AUTHOR={{user `vm_info_author`}}",
+        "VM_INFO_DESCRIPTION={{user `vm_info_description`}}",
+        "VM_INFO_URL={{user `vm_info_url`}}"
       ],
       "execute_command": "{{.Vars}} sudo -E bash '{{.Path}}'",
       "scripts": [
         "scripts/lvresize.sh",
         "scripts/user.sh",
+        "scripts/metadata.sh",
         "scripts/upgrade.sh",
+        "scripts/vboxadditions.sh",
         "scripts/cleanup.sh"
       ],
       "type": "shell"
     },
     {
-      "destination": "box/virtualbox/{{user `vm_name`}}.key",
+      "destination": "box/virtualbox/{{user `vm_name`}}/",
       "direction": "download",
-      "source": "/home/{{user `user_username`}}/{{user `vm_name`}}.key",
-      "type": "file"
-    },
-    {
-      "destination": "box/virtualbox/{{user `vm_name`}}.password",
-      "direction": "download",
-      "source": "/home/{{user `user_username`}}/{{user `vm_name`}}.password",
+      "source": "/home/{{user `user_username`}}/box-template/",
       "type": "file"
     },
     {
@@ -144,7 +149,14 @@
     "user_regenerate_secrets": "false",
     "user_ssh_public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key",
     "user_username": "vagrant",
-    "vm_lv_initial_size":"4096", 
-    "vm_name": "ubuntu-20.04-server-base"
+    "vm_info_author": "Artis Lismanis",
+    "vm_info_description": "A minimal Ubuntu Server 20.40 LTS base box",
+    "vm_info_url": "https://github.com/artislismanis/packer-template",
+    "vm_iso_image": "iso/ubuntu-20.04.1-live-server-amd64.iso",
+    "vm_iso_image_checksum": "443511f6bf12402c12503733059269a2e10dec602916c0a75263e5d990f6bb93",
+    "vm_iso_image_checksum_type": "SHA256",
+    "vm_lv_initial_size": "4096",
+    "vm_name": "ubuntu-20.04-server-base",
+    "vm_vagrantfile": "vagrant/default.tpl"
   }
 }

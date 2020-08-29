@@ -1,0 +1,6 @@
+{
+  "_comment": "Build with `packer build --var-file=vagrant-cloud-overrides.json lubuntu-20.04.json`.",
+  "vagrant_cloud_tag": "artislismanis/lubuntu-20.04",
+  "vagrant_cloud_token": "FNhYM93viJ0mbw.atlasv1.Pif5v6dzCwqZrNrZR8cpLz6Rd8pToMwONTElmNGo0j3Vq5Q69AyogfyOi2RVsTr0518",
+  "vagrant_cloud_version": "1.0.0"
+}

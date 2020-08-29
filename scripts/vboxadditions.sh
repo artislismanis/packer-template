@@ -3,7 +3,7 @@
 echo "==> Installing VirtualBox Guest Additions..."
 
 # Install pre-requisites for building kernel modules
-apt-get install -y dkms build-essential linux-headers-$(uname -r) libnotify-bin
+apt-get install -y dkms build-essential linux-headers-$(uname -r)
 
 VBOX_VERSION=$(cat /home/${USER_USERNAME}/.vbox_version)
 VBOX_ADDITIONS_ISO="/home/${USER_USERNAME}/VBoxGuestAdditions-${VBOX_VERSION}.iso"
