@@ -18,13 +18,12 @@
       "hard_drive_interface": "sata",
       "headless": false,
       "http_directory": "http/ubuntu-20.04",
-      "iso_checksum": "{{user `vm_iso_image_checksum`}}",
-      "iso_checksum_type":"{{user `vm_iso_image_checksum_type`}}",
+      "iso_checksum": "{{user `vm_iso_image_checksum_type`}}:{{user `vm_iso_image_checksum`}}",
       "iso_url": "{{user `vm_iso_image`}}",
       "shutdown_command": "sudo shutdown -P now",
       "ssh_password": "{{ user `user_password` }}",
+      "ssh_timeout": "30m",
       "ssh_username": "{{ user `user_username` }}",
-      "ssh_wait_timeout": "30m",
       "type": "virtualbox-iso",
       "vboxmanage": [
         [
@@ -93,28 +92,30 @@
       "vm_name": "{{user `vm_name`}}"
     }
   ],
-  "post-processors": [[
-    {
-      "include": [
-        "box/virtualbox/{{user `vm_name`}}/box-template/box.key",
-        "box/virtualbox/{{user `vm_name`}}/box-template/box.password",
-        "box/virtualbox/{{user `vm_name`}}/box-template/box.username",
-        "box/virtualbox/{{user `vm_name`}}/box-template/info.json"
-      ],
-      "keep_input_artifact": false,
-      "output": "box/virtualbox/{{user `vm_name`}}/{{user `vm_name`}}.box",
-      "type": "vagrant",
-      "vagrantfile_template": "{{user `vm_vagrantfile`}}"
-    },
-    {
-      "access_token": "{{user `vagrant_cloud_token`}}",
-      "box_tag": "{{user `vagrant_cloud_tag`}}",
-      "keep_input_artifact": true,
-      "name": "publish-vc",
-      "type": "vagrant-cloud",
-      "version": "{{user `vagrant_cloud_version`}}"
-    }
-  ]],
+  "post-processors": [
+    [
+      {
+        "include": [
+          "box/virtualbox/{{user `vm_name`}}/box-template/box.key",
+          "box/virtualbox/{{user `vm_name`}}/box-template/box.password",
+          "box/virtualbox/{{user `vm_name`}}/box-template/box.username",
+          "box/virtualbox/{{user `vm_name`}}/box-template/info.json"
+        ],
+        "keep_input_artifact": false,
+        "output": "box/virtualbox/{{user `vm_name`}}/{{user `vm_name`}}.box",
+        "type": "vagrant",
+        "vagrantfile_template": "{{user `vm_vagrantfile`}}"
+      },
+      {
+        "access_token": "{{user `vagrant_cloud_token`}}",
+        "box_tag": "{{user `vagrant_cloud_tag`}}",
+        "keep_input_artifact": true,
+        "name": "publish-vc",
+        "type": "vagrant-cloud",
+        "version": "{{user `vagrant_cloud_version`}}"
+      }
+    ]
+  ],
   "provisioners": [
     {
       "environment_vars": [
@@ -172,9 +173,9 @@
     "vm_info_author": "Artis Lismanis",
     "vm_info_description": "A minimal Lubuntu 20.40 LTS desktop base box",
     "vm_info_url": "https://github.com/artislismanis/packer-template",
-    "vm_iso_image":"iso/ubuntu-20.04.1-live-server-amd64.iso",
-    "vm_iso_image_checksum":"443511f6bf12402c12503733059269a2e10dec602916c0a75263e5d990f6bb93",
-    "vm_iso_image_checksum_type":"SHA256",
+    "vm_iso_image": "iso/ubuntu-20.04.1-live-server-amd64.iso",
+    "vm_iso_image_checksum": "443511f6bf12402c12503733059269a2e10dec602916c0a75263e5d990f6bb93",
+    "vm_iso_image_checksum_type": "SHA256",
     "vm_lv_initial_size": "8192",
     "vm_name": "lubuntu-20.04",
     "vm_vagrantfile": "vagrant/default.tpl"
