@@ -12,11 +12,11 @@ Rolling your own base box gives you full control and transparency over what goes
 
 ## OK, how do I get started?
 
-1. Make sure you have a recent version of Packer and VirtualBox installed and working on your system.
+1. Make sure you have a recent version of Packer and VirtualBox installed and working on your system. Command examples provided in the project documentation also assume you are using PowerShell with script execution enabled and have Git installed and configured to work on Windows Command Prompt. You can easily adapt these to your CLI and most will work without any modifications.
 
 2. Clone or download this repository.
 
-    ```shell
+    ```powershell
     git clone git://github.com/artislismanis/packer-template.git
     ```
 
@@ -28,7 +28,7 @@ Rolling your own base box gives you full control and transparency over what goes
 
 5. Run packer build in the root of the repository folder.
 
-    ```shell
+    ```powershell
     packer build ubuntu-20.04-server-base.json
     ```
 
@@ -40,11 +40,11 @@ Rolling your own base box gives you full control and transparency over what goes
 
 The project provides two templates `ubuntu-20.04-server-base.json` and `lubuntu-20.04.json`. `lubuntu-20.04.json` includes Vagrant Cloud post-processor and will fail if used without specifying valid Vagrant Cloud details & key in user variables section. You can exclude the post-processor form running by triggering build like so:
 
- ```shell
+ ```powershell
 packer build --except=publish-vc lubuntu-20.04.json
 ```
 
-If you do want to build and publish your box to Vagrant Cloud the template expects you to specify tag, token and version in `VC_TAG`, `VC_TOKEN` and `VC_VERSION` environmental variables respectively.
+If you do want to build and publish your box to Vagrant Cloud, the template expects you to specify tag, token and version in `VC_TAG`, `VC_TOKEN` and `VC_VERSION` environmental variables respectively.
 
 The project has some rudimentary test build scripts and brief documentation to help with testing - check out the notes on [testing](test) for more details.
 
@@ -54,5 +54,5 @@ Over time [project wiki](https://github.com/artislismanis/packer-template/wiki) 
 
 - [Packer Documentation](https://www.packer.io/docs/)
 - [VirtualBox Manual](https://www.virtualbox.org/manual/)
-- [Ubuntu Wiki - Automated Server Installs](https://wiki.ubuntu.com/FoundationsTeam/AutomatedServerInstalls)
+- [Ubuntu Documentation - Automated Server Installs](https://ubuntu.com/server/docs/install/autoinstall)
 - [Vagrant Documentation](https://www.vagrantup.com/docs/)

@@ -12,17 +12,21 @@ This is mostly for checking that any changes to the project code still produce w
 
 To run all test build definitions enter PowerShell and from project root run the following command:
 
-```shell
+```powershell
 .\test\test-builds.ps1
 ```
 
 You can be selective and specify a list of one or more specific builds like so:
 
-```shell
+```powershell
 .\test\test-builds.ps1 -tests ubuntu-base-vagrant,ubuntu-base-alt
 ```
 
-The test names should match your test build definitions specified in the **test-builds.ps1** file. Please note that **lubuntu-vagrant-cloud** test build requires you to set some variables. These can be found in the relevant test definition, but the main requirement is to set your Vagrant Cloud token in **$env:VC_TOKEN** variable.
+The test names should match your test build definitions specified in the **test-builds.ps1** file. Please note that **lubuntu-vagrant-cloud** test build requires you to set some environmental variables to specify Vagrant Cloud configuration (see project readme). If you are using PowerShell you can do something like this:
+
+```powershell
+$env:VC_TAG="artislismanis/lubuntu-20.04"
+```
 
 ## I've done my test builds, what now?
 
@@ -30,7 +34,7 @@ Here are some of the key steps I go through to test my boxes:
 
 1. Create a basic Vagrant VM using each of the builds. To do this, create an appropriately named folder and initialise VM using the selected build. For example, to initialise Vagrant VM based on **ubuntu-base-vagrant** run thw following command in the root of the folder you created:
 
-    ```shell
+    ```powershell
     vagrant init ubuntu-base-vagrant
     ```
 
