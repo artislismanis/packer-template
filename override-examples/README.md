@@ -40,7 +40,7 @@ packer build --var-file custom-overrides.json `
 You can keep overrides in a single file or keep these modular and combine as necessary. Below is an overview of example override files and some scenarios of how you could use these.
 
 | Override file |Notes |
-| --- | --- | --- |
+| --- | --- |
 | **all-overrides.json** | Provides an example of overriding all user variables is a single override file. Contains the defaults implemented in `lubuntu-20.04.json` build definition and easy to modify.|
 | **auto-secret-overrides.json** | Demonstrates creation of a customised user account and forcing regeneration of all secrets as the template box gets provisioned. Makes use of custom Vagrantfile template that helps manage login details when using the template to create Vagrant boxes. |
 | **box-overrides.json** | Demonstrates how to override various variables related to configuring the box build. Allows you to use the same base template but apply extra customisations for specific builds. |
